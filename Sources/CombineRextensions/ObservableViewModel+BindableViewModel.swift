@@ -8,6 +8,7 @@
 
 import CombineRex
 
+@available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *)
 extension ObservableViewModel {
     /// Creates a `Binding` lens for the `ViewModel`. All keypaths of the state are supported and
     /// can be exposed as a `Binding`.

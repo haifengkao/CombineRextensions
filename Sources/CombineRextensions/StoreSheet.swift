@@ -9,6 +9,7 @@
 import CombineRex
 import SwiftUI
 
+@available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *)
 extension View {
     /// Presents a sheet  when the given `Screen` key path is non-nil. The view that will be shown
     /// is created by the given `ViewProducer`.
@@ -23,7 +24,7 @@ extension View {
         path: KeyPath<State, Context?>,
         dismissAction: Action,
         producer: ViewProducer<Context, ContentView>) -> some View {
-        return sheet(
+        sheet(
             item: store.binding[path],
             onDismiss: { store.dispatch(dismissAction) },
             content: producer.view
@@ -32,6 +33,7 @@ extension View {
 }
 
 // MARK: - Sheets from Store
+@available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *)
 extension View {
     /// Presents a sheet  when the given `Context` key path is non-nil. The view that will be shown
     /// is created by the given `ViewProducer`.
@@ -50,7 +52,7 @@ extension View {
         function: String = #function,
         line: UInt = #line,
         info: String? = nil) -> some View {
-        return sheet(
+        sheet(
             item: store.binding[path],
             onDismiss: {
                 withAnimation {

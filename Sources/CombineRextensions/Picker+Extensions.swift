@@ -48,6 +48,7 @@ extension Picker where Label == Text {
     }
 
     /// Allows to create own views for each option. User is responsible for setting the tag.
+    @available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *)
     @MainActor
     public init<Action, State, V: View>(
         localizedString: String,
@@ -61,7 +62,6 @@ extension Picker where Label == Text {
         options: [SelectionValue],
         @ViewBuilder content: @escaping (SelectionValue) -> V
     ) where Content == ForEach<[SelectionValue], SelectionValue, V>, SelectionValue: PickerOptionProtocol {
-
         let binding: Binding<SelectionValue> = .store(
             viewModel,
             state: selectionKeyPath,
@@ -70,7 +70,7 @@ extension Picker where Label == Text {
             line: line,
             info: info,
             onChange: { (value: SelectionValue) in
-                return action(value.tag)
+                action(value.tag)
             }
         )
         self.init(
@@ -81,6 +81,7 @@ extension Picker where Label == Text {
     }
 
     /// Creates simple text views for the picker options.
+    @available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *)
     @MainActor
     public init<Action, State>(
         localizedString: String,

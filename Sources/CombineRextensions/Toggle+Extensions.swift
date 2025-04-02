@@ -10,6 +10,7 @@ import CombineRex
 import SwiftRex
 import SwiftUI
 
+@available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *)
 extension Toggle where Label: View {
     @MainActor
     public init<Action, State>(viewModel: ObservableViewModel<Action, State>,
@@ -24,6 +25,7 @@ extension Toggle where Label: View {
     }
 }
 
+@available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *)
 extension Toggle where Label == Text {
     @MainActor
     public init<Action, State>(

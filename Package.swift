@@ -3,19 +3,19 @@ import PackageDescription
 
 let package = Package(
     name: "CombineRextensions",
-    platforms: [.macOS(.v10_15), .iOS(.v13)],
+    platforms: [.macOS(.v14), .iOS(.v17), .tvOS(.v17), .watchOS(.v10)],
     products: [
         .library(name: "CombineRextensions", targets: ["CombineRextensions"])
     ],
     dependencies: [
-        .package(url: "https://github.com/SwiftRex/SwiftRex.git", from: "0.8.8"),
-        .package(url: "https://github.com/TeufelAudio/UIExtensions.git", from: "4.0.0")
+        .package(url: "https://github.com/HaiFengKao/SwiftRex.git", from: "0.9.6"),
     ],
     targets: [
         .target(name: "CombineRextensions",
                 dependencies: [
-                    .product(name: "CombineRex", package: "SwiftRex"),
-                    .product(name: "UIExtensions", package: "UIExtensions")
+                    .product(name: "CombineRex", package: "SwiftRex")
                 ])
-    ]
+    ],
+    swiftLanguageModes: [.v6]
+
 )

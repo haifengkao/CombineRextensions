@@ -43,6 +43,7 @@ extension Button where Label == Text {
     }
 }
 
+@available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *)
 extension Button where Label == Text {
     @MainActor
     public init<ActionType, StateType>(localizedString: KeyPath<StateType, String>,

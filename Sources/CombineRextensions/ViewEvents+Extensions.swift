@@ -135,6 +135,7 @@ extension View {
 
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 extension View {
+    @available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *)
     public func onPreferenceChange<K: PreferenceKey, S: StoreType>(
         store: S,
         _ key: K.Type = K.self,
@@ -142,10 +143,10 @@ extension View {
         function: String = #function,
         line: UInt = #line,
         info: String? = nil,
-        perform action: @escaping (K.Value) -> S.ActionType
-    ) -> some View where K.Value : Equatable {
+        perform action: @Sendable @escaping (K.Value) -> S.ActionType
+    ) -> some View where K.Value: Equatable {
         onPreferenceChange(key) {
-            store.dispatch(action($0), from: .init(file: file, function: function, line: line, info: info))
+            store.dispatchAsync(action($0), from: .init(file: file, function: function, line: line, info: info))
         }
     }
 }

@@ -10,7 +10,6 @@ import CombineRex
 import SwiftUI
 
 extension ForEach where Content: View {
-
     /// Create a ForEach view that also receives the index of each row. Your collection should have identifiable elements.
     /// - Parameters:
     ///   - enumerated: the collection you want to iterate over
@@ -45,17 +44,18 @@ extension ForEach where Content: View {
 }
 
 extension ForEach where Content: View {
-
     /// Given a collection of identifiable elements in your view model, receive an action with ID and row action for each row view model
     /// - Parameters:
     ///   - viewModel: parent view model, holding the state that contains the collection we want to iterate over
     ///   - collection: resolve the path from your state to some collection
     ///   - identifiableRowToCollectionAction: given an ID and a row action, assemble back a view action for the parent view model
     ///   - content: create a row View, given a view model that is specialized in the row types
+    @available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *)
+    @MainActor
     public init<Subdata: Collection, Action, State, RowAction>(
         viewModel: ObservableViewModel<Action, State>,
         collection: KeyPath<State, Subdata>,
-        identifiableRowToCollectionAction: @escaping (ID, RowAction) -> Action?,
+        identifiableRowToCollectionAction: @Sendable @escaping (ID, RowAction) -> Action?,
         @ViewBuilder content: @escaping (ObservableViewModel<RowAction, Subdata.Element>) -> Content
     ) where Data == [ObservableViewModel<RowAction, Subdata.Element>],
         Subdata.Element: Identifiable,
@@ -85,11 +85,13 @@ extension ForEach where Content: View {
     ///   - id: resolve the ID for each row, or mark the collection element as identifiable to be able to omit this
     ///   - identifiableRowToCollectionAction: given an ID and a row action, assemble back a view action for the parent view model
     ///   - content: create a row View, given a view model that is specialized in the row types
+    @available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *)
+    @MainActor
     public init<Subdata: Collection, Action, State, RowAction>(
         viewModel: ObservableViewModel<Action, State>,
         collection: KeyPath<State, Subdata>,
-        id: KeyPath<Subdata.Element, ID>,
-        identifiableRowToCollectionAction: @escaping (ID, RowAction) -> Action?,
+        id: Sendable & KeyPath<Subdata.Element, ID>,
+        identifiableRowToCollectionAction: @Sendable @escaping (ID, RowAction) -> Action?,
         @ViewBuilder content: @escaping (ObservableViewModel<RowAction, Subdata.Element>) -> Content
     ) where Data == [ObservableViewModel<RowAction, Subdata.Element>], Subdata.Element: Equatable {
         self.init(
@@ -114,14 +116,17 @@ extension ForEach where Content: View {
     ///   - collection: resolve the path from your state to some collection
     ///   - indexedRowToCollectionAction:
     ///   - content: create a row View, given a view model that is specialized in the row types
+    @available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *)
+    @MainActor
     public init<Subdata: Collection, Action, State, RowAction>(
         viewModel: ObservableViewModel<Action, State>,
         collection: KeyPath<State, Subdata>,
-        indexedRowToCollectionAction: @escaping (Subdata.Index, RowAction) -> Action?,
+        indexedRowToCollectionAction: @Sendable @escaping (Subdata.Index, RowAction) -> Action?,
         @ViewBuilder content: @escaping (ObservableViewModel<RowAction, Subdata.Element>) -> Content
     ) where Data == [ObservableViewModel<RowAction, Subdata.Element>],
             Subdata.Element: Identifiable,
             Subdata.Element: Equatable,
+            Subdata.Index: Sendable,
             Subdata.Element.ID == ID {
         self.init(
             Array(zip(viewModel.state[keyPath: collection].indices, viewModel.state[keyPath: collection])).map { index, row in
@@ -147,13 +152,17 @@ extension ForEach where Content: View {
     ///   - id: resolve the ID for each row, or mark the collection element as identifiable to be able to omit this
     ///   - indexedRowToCollectionAction: given an index and a row action, assemble back a view action for the parent view model
     ///   - content: create a row View, given a view model that is specialized in the row types
+    @available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *)
+    @MainActor
     public init<Subdata: Collection, Action, State, RowAction>(
         viewModel: ObservableViewModel<Action, State>,
         collection: KeyPath<State, Subdata>,
         id: KeyPath<Subdata.Element, ID>,
-        indexedRowToCollectionAction: @escaping (Subdata.Index, RowAction) -> Action?,
+        indexedRowToCollectionAction: @Sendable @escaping (Subdata.Index, RowAction) -> Action?,
         @ViewBuilder content: @escaping (ObservableViewModel<RowAction, Subdata.Element>) -> Content
-    ) where Data == [ObservableViewModel<RowAction, Subdata.Element>], Subdata.Element: Equatable {
+    ) where Data == [ObservableViewModel<RowAction, Subdata.Element>],
+    Subdata.Index: Sendable,
+    Subdata.Element: Equatable {
         self.init(
             Array(zip(viewModel.state[keyPath: collection].indices, viewModel.state[keyPath: collection])).map { index, row in
                 viewModel.projection(

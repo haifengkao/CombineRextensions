@@ -12,6 +12,7 @@ import SwiftRex
 import SwiftUI
 
 extension NavigationLink {
+    @available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *)
     @MainActor
     public init<Action, State, RowTag: Hashable>(
         destination: Destination,
@@ -52,6 +53,7 @@ public protocol PoppableAction {
 
 // MARK: - NavigationTree Support
 extension NavigationLink {
+    @available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *)
     @MainActor
     public init?<Action: PoppableAction, State, ViewProducerContext: Hashable>(
         store: ObservableViewModel<Action, State>,

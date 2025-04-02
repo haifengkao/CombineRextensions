@@ -11,7 +11,8 @@ import SwiftRex
 import SwiftUI
 
 /// Wraps a ViewModel and exposes a subscript that returns Bindings to the `ViewModel`.
-public struct BindableViewModel<Action, State> {
+@available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *)
+public struct BindableViewModel<Action: Sendable, State: Sendable> {
     private var viewModel: ObservableViewModel<Action, State>
 
     public init(_ viewModel: ObservableViewModel<Action, State>) {
@@ -37,7 +38,6 @@ public struct BindableViewModel<Action, State> {
                               line: line,
                               info: info,
                               onChange: actionClosure)
-
             } else {
                 return .getOnly(viewModel, state: path)
             }

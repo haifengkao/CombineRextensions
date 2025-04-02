@@ -16,6 +16,7 @@ public enum ChangeModifier {
     case notAnimated
 }
 
+@available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *)
 @MainActor
 extension Binding {
     public static func store<Action, State>(
@@ -50,7 +51,7 @@ extension Binding {
         info: String? = nil,
         onChange: @escaping (Value) -> Action?
     ) -> Binding<Value> {
-        return .caching(
+        .caching(
             get: { stateMap(store.state) },
             set: { newValue in
                 // Allow to not dispatch any action.
@@ -64,13 +65,13 @@ extension Binding {
                 case .notAnimated:
                     dispatch()
                 }
-        })
+            })
     }
 
     /// Returns a Binding that ignores all tries to set the value.
     public static func getOnly<Action, State>(_ store: ObservableViewModel<Action, State>,
                                               state: KeyPath<State, Value>) -> Binding<Value> {
-        return .init(
+        .init(
             get: { store.state[keyPath: state] },
             set: { _ in }
         )
@@ -86,7 +87,6 @@ extension Binding {
             set: { newValue in
                 temp = newValue
                 set(newValue)
-
-        })
+            })
     }
 }
