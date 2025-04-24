@@ -136,7 +136,7 @@ extension View {
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 extension View {
     @available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *)
-    public func onPreferenceChange<K: PreferenceKey, S: StoreType>(
+    public func onPreferenceChange<K: PreferenceKey, S: StoreType & Sendable>(
         store: S,
         _ key: K.Type = K.self,
         file: String = #file,
